@@ -14,6 +14,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          instagram_handle: string | null
           name: string
           position: string
         }
@@ -21,6 +22,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          instagram_handle?: string | null
           name: string
           position: string
         }
@@ -28,6 +30,7 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          instagram_handle?: string | null
           name?: string
           position?: string
         }

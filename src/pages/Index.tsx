@@ -4,17 +4,20 @@ import MessagePreview from "@/components/MessagePreview";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-primary mb-4">Take Action for Change</h1>
-            <p className="text-lg text-gray-600">Send messages to decision makers and make your voice heard</p>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-4">
+              Take Action for Change
+            </h1>
+            <p className="text-lg text-gray-600">
+              Connect with decision makers through email or Instagram and make your voice heard
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm border">
-              <h2 className="text-2xl font-semibold mb-6">Create Message</h2>
+            <div>
               <CampaignForm />
             </div>
 
