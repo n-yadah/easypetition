@@ -11,8 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/lib/supabaseClient";
-import type { Recipient } from "@/lib/supabaseClient";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Recipient {
+  id: string;
+  name: string;
+  position: string;
+  email: string;
+}
 
 interface FormData {
   subject: string;
