@@ -12,18 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/lib/supabaseClient";
+import type { Recipient } from "@/lib/supabaseClient";
 
 interface FormData {
   subject: string;
   template: string;
   selectedRecipientId: string;
-}
-
-interface Recipient {
-  id: string;
-  name: string;
-  position: string;
-  email: string;
 }
 
 export default function CampaignForm() {
