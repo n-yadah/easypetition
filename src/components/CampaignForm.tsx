@@ -29,7 +29,16 @@ interface FormData {
   contactMethod: 'email' | 'instagram';
 }
 
-export default function CampaignForm() {
+interface CampaignFormProps {
+  onFormUpdate: (data: {
+    subject: string;
+    template: string;
+    recipientName: string;
+    contactMethod: 'email' | 'instagram';
+  }) => void;
+}
+
+export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     subject: "",
@@ -61,6 +70,16 @@ export default function CampaignForm() {
 
     fetchRecipients();
   }, []);
+
+  useEffect(() => {
+    const selectedRecipient = recipients.find(r => r.id === formData.selectedRecipientId);
+    onFormUpdate({
+      subject: formData.subject,
+      template: formData.template,
+      recipientName: selectedRecipient?.name || "",
+      contactMethod: formData.contactMethod
+    });
+  }, [formData, recipients]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

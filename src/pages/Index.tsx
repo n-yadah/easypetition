@@ -1,8 +1,27 @@
 
+import { useState } from "react";
 import CampaignForm from "@/components/CampaignForm";
 import MessagePreview from "@/components/MessagePreview";
 
+interface FormState {
+  subject: string;
+  template: string;
+  recipientName: string;
+  contactMethod: 'email' | 'instagram';
+}
+
 const Index = () => {
+  const [formState, setFormState] = useState<FormState>({
+    subject: "",
+    template: "Dear {name},\n\nI am writing to express my concern about...",
+    recipientName: "",
+    contactMethod: 'email'
+  });
+
+  const handleFormUpdate = (data: Partial<FormState>) => {
+    setFormState(prev => ({ ...prev, ...data }));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-12">
@@ -18,13 +37,15 @@ const Index = () => {
 
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <CampaignForm />
+              <CampaignForm onFormUpdate={handleFormUpdate} />
             </div>
 
             <div className="space-y-6">
               <MessagePreview 
-                template="Dear {name},\n\nI am writing to express my concern about..."
-                recipientName="John Doe"
+                template={formState.template}
+                recipientName={formState.recipientName}
+                subject={formState.subject}
+                contactMethod={formState.contactMethod}
               />
             </div>
           </div>
