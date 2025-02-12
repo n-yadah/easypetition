@@ -15,6 +15,8 @@ interface FormState {
     position: string;
     description: string;
     photo_url: string;
+    email?: string;
+    instagram_handle?: string;
   } | null;
 }
 
@@ -65,6 +67,8 @@ const Index = () => {
                 senderName={formState.senderName}
                 subject={formState.subject}
                 contactMethod={formState.contactMethod}
+                email={formState.selectedRecipient?.email}
+                instagramHandle={formState.selectedRecipient?.instagram_handle}
               />
             </div>
           </div>
