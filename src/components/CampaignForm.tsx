@@ -22,6 +22,7 @@ interface Recipient {
   instagram_handle: string | null;
   photo_url: string;
   description: string;
+  created_at: string;
 }
 
 interface FormData {
@@ -75,7 +76,13 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
       }
 
       if (data) {
-        setRecipients(data);
+        // Ensure all required fields are present with default values if needed
+        const validatedData: Recipient[] = data.map(recipient => ({
+          ...recipient,
+          photo_url: recipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
+          description: recipient.description || 'No description available'
+        }));
+        setRecipients(validatedData);
       }
     };
 
