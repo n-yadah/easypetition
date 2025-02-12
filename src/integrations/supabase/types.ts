@@ -12,26 +12,32 @@ export type Database = {
       recipients: {
         Row: {
           created_at: string
+          description: string | null
           email: string
           id: string
           instagram_handle: string | null
           name: string
+          photo_url: string | null
           position: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           email: string
           id?: string
           instagram_handle?: string | null
           name: string
+          photo_url?: string | null
           position: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           email?: string
           id?: string
           instagram_handle?: string | null
           name?: string
+          photo_url?: string | null
           position?: string
         }
         Relationships: []
