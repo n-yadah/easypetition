@@ -5,6 +5,7 @@ import { Mail, Instagram } from "lucide-react";
 interface MessagePreviewProps {
   template: string;
   recipientName?: string;
+  senderName?: string;
   subject?: string;
   contactMethod?: 'email' | 'instagram';
 }
@@ -12,10 +13,13 @@ interface MessagePreviewProps {
 export default function MessagePreview({ 
   template, 
   recipientName = "Recipient",
+  senderName = "Sender",
   subject,
   contactMethod = 'email'
 }: MessagePreviewProps) {
-  const previewMessage = template.replace(/{name}/g, recipientName);
+  const previewMessage = template
+    .replace(/{name}/g, recipientName)
+    .replace(/{sender}/g, senderName);
 
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">

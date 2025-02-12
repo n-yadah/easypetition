@@ -20,6 +20,8 @@ interface Recipient {
   position: string;
   email: string;
   instagram_handle: string | null;
+  photo_url: string;
+  description: string;
 }
 
 interface FormData {
@@ -27,6 +29,7 @@ interface FormData {
   template: string;
   selectedRecipientId: string;
   contactMethod: 'email' | 'instagram';
+  senderName: string;
 }
 
 interface CampaignFormProps {
@@ -34,7 +37,14 @@ interface CampaignFormProps {
     subject: string;
     template: string;
     recipientName: string;
+    senderName: string;
     contactMethod: 'email' | 'instagram';
+    selectedRecipient: {
+      name: string;
+      position: string;
+      description: string;
+      photo_url: string;
+    } | null;
   }) => void;
 }
 
@@ -42,9 +52,10 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     subject: "",
-    template: "",
+    template: "Dear {name},\n\nI am writing to express my concern about...\n\nSincerely,\n{sender}",
     selectedRecipientId: "",
     contactMethod: 'email',
+    senderName: "",
   });
   const [recipients, setRecipients] = useState<Recipient[]>([]);
 
@@ -77,14 +88,21 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
       subject: formData.subject,
       template: formData.template,
       recipientName: selectedRecipient?.name || "",
-      contactMethod: formData.contactMethod
+      senderName: formData.senderName,
+      contactMethod: formData.contactMethod,
+      selectedRecipient: selectedRecipient ? {
+        name: selectedRecipient.name,
+        position: selectedRecipient.position,
+        description: selectedRecipient.description,
+        photo_url: selectedRecipient.photo_url,
+      } : null
     });
   }, [formData, recipients]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.template || !formData.selectedRecipientId) {
+    if (!formData.template || !formData.selectedRecipientId || !formData.senderName) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields",
@@ -104,10 +122,19 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
     });
   };
 
-  const selectedRecipient = recipients.find(r => r.id === formData.selectedRecipientId);
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn bg-gradient-to-br from-white to-gray-50 p-8 rounded-xl shadow-lg border border-gray-100">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">Your Name</label>
+        <Input
+          type="text"
+          value={formData.senderName}
+          onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
+          placeholder="Enter your name"
+          className="w-full"
+        />
+      </div>
+
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Select Contact Method</label>
         <div className="flex gap-4">
@@ -170,10 +197,11 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
 
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Message Template</label>
+        <p className="text-xs text-gray-500">Use {'{name}'} for recipient name and {'{sender}'} for your name</p>
         <Textarea
           value={formData.template}
           onChange={(e) => setFormData({ ...formData, template: e.target.value })}
-          placeholder="Enter your message. Use {name} for recipient name placeholder"
+          placeholder="Enter your message"
           className="w-full min-h-[200px] bg-white"
         />
       </div>

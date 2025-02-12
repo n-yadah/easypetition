@@ -2,20 +2,30 @@
 import { useState } from "react";
 import CampaignForm from "@/components/CampaignForm";
 import MessagePreview from "@/components/MessagePreview";
+import RecipientCard from "@/components/RecipientCard";
 
 interface FormState {
   subject: string;
   template: string;
   recipientName: string;
+  senderName: string;
   contactMethod: 'email' | 'instagram';
+  selectedRecipient: {
+    name: string;
+    position: string;
+    description: string;
+    photo_url: string;
+  } | null;
 }
 
 const Index = () => {
   const [formState, setFormState] = useState<FormState>({
     subject: "",
-    template: "Dear {name},\n\nI am writing to express my concern about...",
+    template: "Dear {name},\n\nI am writing to express my concern about...\n\nSincerely,\n{sender}",
     recipientName: "",
-    contactMethod: 'email'
+    senderName: "",
+    contactMethod: 'email',
+    selectedRecipient: null
   });
 
   const handleFormUpdate = (data: Partial<FormState>) => {
@@ -36,14 +46,23 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div>
+            <div className="space-y-6">
               <CampaignForm onFormUpdate={handleFormUpdate} />
             </div>
 
             <div className="space-y-6">
+              {formState.selectedRecipient && (
+                <RecipientCard
+                  name={formState.selectedRecipient.name}
+                  position={formState.selectedRecipient.position}
+                  description={formState.selectedRecipient.description}
+                  photoUrl={formState.selectedRecipient.photo_url}
+                />
+              )}
               <MessagePreview 
                 template={formState.template}
                 recipientName={formState.recipientName}
+                senderName={formState.senderName}
                 subject={formState.subject}
                 contactMethod={formState.contactMethod}
               />
