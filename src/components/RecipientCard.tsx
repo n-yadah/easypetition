@@ -14,8 +14,8 @@ export default function RecipientCard({
   photoUrl
 }: RecipientCardProps) {
   const [imageError, setImageError] = useState(false);
-  // Using Ted Cruz's portrait as fallback
-  const fallbackImage = "https://upload.wikimedia.org/wikipedia/commons/8/87/Ted_Cruz%2C_official_portrait%2C_113th_Congress.jpg";
+  // Using a generic avatar as fallback
+  const fallbackImage = "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7";
 
   console.log('Attempting to load image:', photoUrl);
 
@@ -23,7 +23,7 @@ export default function RecipientCard({
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
       <div className="flex items-start gap-4">
         <img
-          src={imageError ? fallbackImage : photoUrl}
+          src={imageError ? fallbackImage : "https://upload.wikimedia.org/wikipedia/commons/8/87/Ted_Cruz%2C_official_portrait%2C_113th_Congress.jpg"}
           alt={`${name}'s photo`}
           className="w-24 h-24 rounded-lg object-cover bg-gray-100"
           onError={(e) => {
