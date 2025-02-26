@@ -17,6 +17,7 @@ export type Database = {
           id: string
           instagram_handle: string | null
           name: string
+          phone_number: string | null
           photo_url: string | null
           position: string
         }
@@ -27,6 +28,7 @@ export type Database = {
           id?: string
           instagram_handle?: string | null
           name: string
+          phone_number?: string | null
           photo_url?: string | null
           position: string
         }
@@ -37,6 +39,7 @@ export type Database = {
           id?: string
           instagram_handle?: string | null
           name?: string
+          phone_number?: string | null
           photo_url?: string | null
           position?: string
         }
