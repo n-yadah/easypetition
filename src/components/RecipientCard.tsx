@@ -14,7 +14,10 @@ export default function RecipientCard({
   photoUrl
 }: RecipientCardProps) {
   const [imageError, setImageError] = useState(false);
-  const fallbackImage = "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843"; // Nature fallback image
+  // Using a different Unsplash image as fallback - a code editor screenshot which is more relevant
+  const fallbackImage = "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7";
+
+  console.log('Attempting to load image:', photoUrl);
 
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
@@ -23,7 +26,10 @@ export default function RecipientCard({
           src={imageError ? fallbackImage : photoUrl}
           alt={`${name}'s photo`}
           className="w-24 h-24 rounded-lg object-cover bg-gray-100"
-          onError={() => setImageError(true)}
+          onError={(e) => {
+            console.log('Image failed to load, using fallback:', photoUrl);
+            setImageError(true);
+          }}
         />
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
