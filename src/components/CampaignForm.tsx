@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,13 +17,16 @@ interface Recipient {
   id: string;
   name: string;
   position: string;
-  email: string | null;
+  email: string;
   instagram_handle: string | null;
-  phone_number: string | null; // Added phone_number field
   photo_url: string | null;
   description: string | null;
   created_at: string;
 }
+
+type RecipientWithPhone = Recipient & {
+  phone_number?: string;
+};
 
 interface FormData {
   subject: string;
@@ -161,7 +163,6 @@ Thank you for your time. Could you please take down my contact information for a
     }
 
     if (formData.contactMethod === 'phone') {
-      // For phone calls, open the phone dialer
       window.location.href = `tel:${recipient.phone_number?.replace(/[^0-9]/g, '')}`;
     }
 
