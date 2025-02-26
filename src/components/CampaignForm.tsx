@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +22,7 @@ interface Recipient {
   photo_url: string | null;
   description: string | null;
   created_at: string;
-  phone_number?: string;  // Make it optional since it's not in the database types
+  phone_number?: string;
 }
 
 interface FormData {
@@ -56,25 +55,8 @@ interface CampaignFormProps {
 export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
-    subject: "Urgent Call for Sanctions Against Rwanda to Protect U.S. Economic and National Security Interests",
-    template: `Hi, my name is {sender}.
-
-I'm calling {name} because of [their position as chair/ranking member of the subcommittee].
-
-I'm calling to urge your office to support a resolution imposing targeted sanctions against the Rwandan Defense Forces (RDF) and the M23 rebel group due to their destabilizing actions in the Democratic Republic of the Congo (DRC).
-
-Key points:
-- The RDF and M23 have killed more than 3,000 civilians in two weeks
-- They've captured strategic cities in mineral-rich provinces
-- This threatens U.S. access to strategic minerals like cobalt
-- Executive Order 13413 provides a framework for sanctions
-- This affects U.S. industries: clean energy, technology, defense, and manufacturing
-
-Can I count on the [Senator/Representative] to support sanctions against Rwanda and M23?
-
-[Wait for response]
-
-Thank you for your time. Could you please take down my contact information for a follow-up?`,
+    subject: "",
+    template: "",
     selectedRecipientId: "",
     contactMethod: 'phone',
     senderName: "",
@@ -97,14 +79,7 @@ Thank you for your time. Could you please take down my contact information for a
       }
 
       if (data) {
-        const validatedData: Recipient[] = data.map(recipient => ({
-          ...recipient,
-          photo_url: recipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
-          description: recipient.description || 'No description available',
-          instagram_handle: recipient.instagram_handle || null,
-          phone_number: (recipient as any).phone_number || null // Safe type assertion for optional field
-        }));
-        setRecipients(validatedData);
+        setRecipients(data);
       }
     };
 
@@ -168,6 +143,19 @@ Thank you for your time. Could you please take down my contact information for a
       description: `${formData.contactMethod === 'phone' ? 'Calling' : 'Your message will be sent to'} ${recipient.name} via ${formData.contactMethod} (${contactInfo})`,
     });
   };
+
+  const filteredRecipients = recipients.filter(recipient => {
+    switch (formData.contactMethod) {
+      case 'email':
+        return recipient.email && recipient.email.trim() !== '';
+      case 'instagram':
+        return recipient.instagram_handle && recipient.instagram_handle.trim() !== '';
+      case 'phone':
+        return recipient.phone_number && recipient.phone_number.trim() !== '';
+      default:
+        return false;
+    }
+  });
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn bg-gradient-to-br from-white to-gray-50 p-8 rounded-xl shadow-lg border border-gray-100">
@@ -238,24 +226,11 @@ Thank you for your time. Could you please take down my contact information for a
             <SelectValue placeholder="Choose a decision maker" />
           </SelectTrigger>
           <SelectContent>
-            {recipients
-              .filter(recipient => {
-                switch (formData.contactMethod) {
-                  case 'email':
-                    return recipient.email;
-                  case 'instagram':
-                    return recipient.instagram_handle;
-                  case 'phone':
-                    return recipient.phone_number;
-                  default:
-                    return false;
-                }
-              })
-              .map((recipient) => (
-                <SelectItem key={recipient.id} value={recipient.id}>
-                  {recipient.name} - {recipient.position}
-                </SelectItem>
-              ))}
+            {filteredRecipients.map((recipient) => (
+              <SelectItem key={recipient.id} value={recipient.id}>
+                {recipient.name} - {recipient.position}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
