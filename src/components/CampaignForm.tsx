@@ -20,7 +20,7 @@ interface Recipient {
   position: string;
   email: string | null;
   instagram_handle: string | null;
-  phone_number: string | null;
+  phone_number: string | null; // Added phone_number field
   photo_url: string | null;
   description: string | null;
   created_at: string;

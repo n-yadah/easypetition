@@ -9,7 +9,7 @@ interface FormState {
   template: string;
   recipientName: string;
   senderName: string;
-  contactMethod: 'email' | 'instagram';
+  contactMethod: 'email' | 'instagram' | 'phone'; // Added 'phone' to allowed types
   selectedRecipient: {
     name: string;
     position: string;
@@ -17,6 +17,7 @@ interface FormState {
     photo_url: string;
     email?: string;
     instagram_handle?: string;
+    phone_number?: string; // Added phone_number field
   } | null;
 }
 
@@ -43,7 +44,7 @@ const Index = () => {
               Take Action for Change
             </h1>
             <p className="text-lg text-gray-600 mb-4">
-              Connect with decision makers through email or Instagram and make your voice heard
+              Connect with decision makers and make your voice heard
             </p>
           </div>
 
@@ -69,6 +70,7 @@ const Index = () => {
                 contactMethod={formState.contactMethod}
                 email={formState.selectedRecipient?.email}
                 instagramHandle={formState.selectedRecipient?.instagram_handle}
+                phoneNumber={formState.selectedRecipient?.phone_number}
               />
             </div>
           </div>
