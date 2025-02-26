@@ -48,15 +48,15 @@ interface CampaignFormProps {
 
 const EMAIL_TEMPLATE = `Dear {name},
 
-I am writing regarding the crisis in the Democratic Republic of the Congo. The Rwandan Defense Forces (RDF) and M23 rebel group have killed over 3,000 civilians and captured strategic cities, threatening U.S. access to vital minerals.
+I am writing to urge your office to support a resolution imposing targeted sanctions against the Rwandan Defense Forces (RDF) and the M23 rebel group due to their destabilizing actions in the Democratic Republic of the Congo (DRC). They have killed more than 3,000 civilians in the span of two weeks and have captured two strategic cities in two of the most mineral rich provinces of the DRC. These activities threaten America's access to strategic minerals, including cobalt and other rare earth elements essential for industries across the United States.
 
-Executive Order 13413 provides a framework for sanctions against those destabilizing the DRC. Strengthening these sanctions will help secure ethical supply chains for U.S. industries relying on critical materials.
+Executive Order 13413, signed by Presidents Bush and Obama, provides a framework for holding accountable those who contribute to instability in the DRC. Strengthening and enforcing these sanctions against actors like the RDF and M23 will not only help dismantle the predatory system exploiting Congolese resources but also secure an ethical and stable supply chain for U.S. industries reliant on these critical materials.
 
-The DRC's cobalt and strategic minerals are essential for clean energy, technology, defense, and manufacturing. Rwanda's military actions threaten U.S. economic and security interests.
+A secure and transparent supply of cobalt, coltan and other strategic minerals is vital to multiple sectors, including clean energy, technology, defense, and advanced manufacturing. America depends on these materials for battery production, automotive manufacturing, aerospace, and military applications. Continued instability in the DRC, fueled by Rwandan-backed armed groups, threatens U.S. economic and national security interests.
 
-Please support sanctions and policies that strengthen U.S.-DRC relations. Your leadership is crucial in protecting American industries from supply chain disruptions.
+I urge you to take decisive action in supporting sanctions and advocating for policies that reinforce U.S.-DRC relations and help bring peace to the region. Your leadership is crucial in ensuring that American industries are not left vulnerable to supply chain disruptions caused by Rwanda's military takeover of Congolese territory.
 
-Thank you for your consideration.
+Thank you for your time and consideration. I look forward to your response.
 
 Sincerely,
 {sender}`;
@@ -69,7 +69,7 @@ In 2013, U.S. pressure on Rwanda through aid suspension worked. We need similar 
 
 Could you please support measures to restore peace in the region? Thank you for your time.`;
 
-const DEFAULT_SUBJECT = "Support Sanctions on Rwanda to Protect U.S. Interests";
+const DEFAULT_SUBJECT = "Urgent Call for Sanctions Against Rwanda to Protect U.S. Economic and National Security Interests";
 
 export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
