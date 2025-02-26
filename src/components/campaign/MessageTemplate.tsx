@@ -18,7 +18,7 @@ export function MessageTemplate({
   onTemplateChange
 }: MessageTemplateProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {contactMethod === 'email' && (
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Subject</label>
@@ -27,7 +27,7 @@ export function MessageTemplate({
             value={subject}
             onChange={(e) => onSubjectChange(e.target.value)}
             placeholder="Enter message subject"
-            className="w-full"
+            className="w-full text-base sm:text-sm"
           />
         </div>
       )}
@@ -40,7 +40,7 @@ export function MessageTemplate({
           value={template}
           onChange={(e) => onTemplateChange(e.target.value)}
           placeholder={contactMethod === 'phone' ? "Enter your call script" : "Enter your message"}
-          className="w-full min-h-[200px] bg-white"
+          className="w-full min-h-[150px] sm:min-h-[200px] bg-white text-base sm:text-sm leading-relaxed"
         />
       </div>
     </div>

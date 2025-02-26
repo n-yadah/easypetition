@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,28 +48,28 @@ interface CampaignFormProps {
 
 const EMAIL_TEMPLATE = `Dear {name},
 
-I am writing to urge your office to support a resolution imposing targeted sanctions against the Rwandan Defense Forces (RDF) and the M23 rebel group due to their destabilizing actions in the Democratic Republic of the Congo (DRC). They have killed more than 3,000 civilians in the span of two weeks and have captured two strategic cities in two of the most mineral rich provinces of the DRC. These activities threaten America's access to strategic minerals, including cobalt and other rare earth elements essential for industries across the United States.
+I am writing regarding the crisis in the Democratic Republic of the Congo. The Rwandan Defense Forces (RDF) and M23 rebel group have killed over 3,000 civilians and captured strategic cities, threatening U.S. access to vital minerals.
 
-Executive Order 13413, signed by Presidents Bush and Obama, provides a framework for holding accountable those who contribute to instability in the DRC. Strengthening and enforcing these sanctions against actors like the RDF and M23 will not only help dismantle the predatory system exploiting Congolese resources but also secure an ethical and stable supply chain for U.S. industries reliant on these critical materials.
+Executive Order 13413 provides a framework for sanctions against those destabilizing the DRC. Strengthening these sanctions will help secure ethical supply chains for U.S. industries relying on critical materials.
 
-A secure and transparent supply of cobalt, coltan and other strategic minerals is vital to multiple sectors, including clean energy, technology, defense, and advanced manufacturing. America depends on these materials for battery production, automotive manufacturing, aerospace, and military applications. Continued instability in the DRC, fueled by Rwandan-backed armed groups, threatens U.S. economic and national security interests.
+The DRC's cobalt and strategic minerals are essential for clean energy, technology, defense, and manufacturing. Rwanda's military actions threaten U.S. economic and security interests.
 
-I urge you to take decisive action in supporting sanctions and advocating for policies that reinforce U.S.-DRC relations and help bring peace to the region. Your leadership is crucial in ensuring that American industries are not left vulnerable to supply chain disruptions caused by Rwanda's military takeover of Congolese territory.
+Please support sanctions and policies that strengthen U.S.-DRC relations. Your leadership is crucial in protecting American industries from supply chain disruptions.
 
-Thank you for your time and consideration. I look forward to your response.
+Thank you for your consideration.
 
 Sincerely,
 {sender}`;
 
-const PHONE_TEMPLATE = `Hello, my name is {sender}. I am reaching out to urge you to take immediate action regarding the ongoing crisis in the Democratic Republic of The Congo.
+const PHONE_TEMPLATE = `Hello, my name is {sender}. I'm calling about the crisis in DR Congo.
 
-The Rwandan government is actively supporting the M23 rebel group, which has captured the city of Goma, displacing thousands of civilians and escalating violence in the region. This occupation represents a clear violation of Congolese sovereignty and is causing immense suffering.
+The M23 rebels, backed by Rwanda, have captured Goma and displaced thousands. This violates Congo's sovereignty and threatens U.S. interests.
 
-In 2013, the United States successfully pressured Rwanda by threatening to suspend foreign aid, which forced the M23 to retreat. We are calling on you to push the U.S. government to take similar measures today by imposing sanctions on Rwanda or suspending aid until they cease their support to the M23.
+In 2013, U.S. pressure on Rwanda through aid suspension worked. We need similar action now - either sanctions or aid suspension until Rwanda stops supporting M23.
 
-Sanctions can save lives and restore peace in the Great Lakes region. Please act now to stop the violence and support justice. Thank you for your time and leadership.`;
+Could you please support measures to restore peace in the region? Thank you for your time.`;
 
-const DEFAULT_SUBJECT = "Urgent Call for Sanctions Against Rwanda to Protect U.S. Economic and National Security Interests";
+const DEFAULT_SUBJECT = "Support Sanctions on Rwanda to Protect U.S. Interests";
 
 export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
@@ -170,7 +171,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn bg-gradient-to-br from-white to-gray-50 p-8 rounded-xl shadow-lg border border-gray-100">
+    <form onSubmit={handleSubmit} className="space-y-4 animate-fadeIn bg-gradient-to-br from-white to-gray-50 p-4 sm:p-8 rounded-xl shadow-lg border border-gray-100">
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Your Name</label>
         <Input
@@ -178,7 +179,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
           value={formData.senderName}
           onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
           placeholder="Enter your name"
-          className="w-full"
+          className="w-full text-base sm:text-sm"
         />
       </div>
 
@@ -202,7 +203,10 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
         onTemplateChange={(template) => setFormData({ ...formData, template })}
       />
 
-      <Button type="submit" className="w-full bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:from-primary/90 hover:to-primary text-white shadow-md">
+      <Button 
+        type="submit" 
+        className="w-full py-6 text-lg sm:py-4 sm:text-base bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:from-primary/90 hover:to-primary text-white shadow-md"
+      >
         {formData.contactMethod === 'phone' ? 'Start Call' : 'Prepare Message'}
       </Button>
     </form>
