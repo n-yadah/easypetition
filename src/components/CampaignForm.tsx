@@ -1,17 +1,12 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Instagram, Phone } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { ContactMethodSelector } from "./campaign/ContactMethodSelector";
+import { RecipientSelector } from "./campaign/RecipientSelector";
+import { MessageTemplate } from "./campaign/MessageTemplate";
 
 interface Recipient {
   id: string;
@@ -142,19 +137,6 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
     });
   };
 
-  const filteredRecipients = recipients.filter(recipient => {
-    switch (formData.contactMethod) {
-      case 'email':
-        return recipient.email && recipient.email.trim() !== '';
-      case 'instagram':
-        return recipient.instagram_handle && recipient.instagram_handle.trim() !== '';
-      case 'phone':
-        return recipient.phone_number && recipient.phone_number.trim() !== '';
-      default:
-        return false;
-    }
-  });
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn bg-gradient-to-br from-white to-gray-50 p-8 rounded-xl shadow-lg border border-gray-100">
       <div className="space-y-2">
@@ -168,83 +150,25 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
         />
       </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">Select Contact Method</label>
-        <div className="flex gap-4">
-          <Button
-            type="button"
-            variant={formData.contactMethod === 'phone' ? 'default' : 'outline'}
-            className="flex-1 flex items-center justify-center gap-2"
-            onClick={() => setFormData({ ...formData, contactMethod: 'phone' })}
-          >
-            <Phone className="w-4 h-4" />
-            Phone
-          </Button>
-          <Button
-            type="button"
-            variant={formData.contactMethod === 'email' ? 'default' : 'outline'}
-            className="flex-1 flex items-center justify-center gap-2"
-            onClick={() => setFormData({ ...formData, contactMethod: 'email' })}
-          >
-            <Mail className="w-4 h-4" />
-            Email
-          </Button>
-          <Button
-            type="button"
-            variant={formData.contactMethod === 'instagram' ? 'default' : 'outline'}
-            className="flex-1 flex items-center justify-center gap-2"
-            onClick={() => setFormData({ ...formData, contactMethod: 'instagram' })}
-          >
-            <Instagram className="w-4 h-4" />
-            Instagram
-          </Button>
-        </div>
-      </div>
+      <ContactMethodSelector
+        selectedMethod={formData.contactMethod}
+        onMethodChange={(method) => setFormData({ ...formData, contactMethod: method })}
+      />
 
-      {formData.contactMethod === 'email' && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Subject</label>
-          <Input
-            type="text"
-            value={formData.subject}
-            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-            placeholder="Enter message subject"
-            className="w-full"
-          />
-        </div>
-      )}
+      <RecipientSelector
+        recipients={recipients}
+        selectedRecipientId={formData.selectedRecipientId}
+        onRecipientChange={(id) => setFormData({ ...formData, selectedRecipientId: id })}
+        contactMethod={formData.contactMethod}
+      />
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">Select Recipient</label>
-        <Select
-          value={formData.selectedRecipientId}
-          onValueChange={(value) => setFormData({ ...formData, selectedRecipientId: value })}
-        >
-          <SelectTrigger className="w-full bg-white">
-            <SelectValue placeholder="Choose a decision maker" />
-          </SelectTrigger>
-          <SelectContent>
-            {filteredRecipients.map((recipient) => (
-              <SelectItem key={recipient.id} value={recipient.id}>
-                {recipient.name} - {recipient.position}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
-          {formData.contactMethod === 'phone' ? 'Call Script' : 'Message Template'}
-        </label>
-        <p className="text-xs text-gray-500">Use {'{name}'} for recipient name and {'{sender}'} for your name</p>
-        <Textarea
-          value={formData.template}
-          onChange={(e) => setFormData({ ...formData, template: e.target.value })}
-          placeholder={formData.contactMethod === 'phone' ? "Enter your call script" : "Enter your message"}
-          className="w-full min-h-[200px] bg-white"
-        />
-      </div>
+      <MessageTemplate
+        subject={formData.subject}
+        template={formData.template}
+        contactMethod={formData.contactMethod}
+        onSubjectChange={(subject) => setFormData({ ...formData, subject })}
+        onTemplateChange={(template) => setFormData({ ...formData, template })}
+      />
 
       <Button type="submit" className="w-full bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:from-primary/90 hover:to-primary text-white shadow-md">
         {formData.contactMethod === 'phone' ? 'Start Call' : 'Prepare Message'}
