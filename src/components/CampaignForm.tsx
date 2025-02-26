@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,11 +23,8 @@ interface Recipient {
   photo_url: string | null;
   description: string | null;
   created_at: string;
+  phone_number?: string;  // Make it optional since it's not in the database types
 }
-
-type RecipientWithPhone = Recipient & {
-  phone_number?: string;
-};
 
 interface FormData {
   subject: string;
@@ -103,9 +101,8 @@ Thank you for your time. Could you please take down my contact information for a
           ...recipient,
           photo_url: recipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
           description: recipient.description || 'No description available',
-          email: recipient.email || null,
           instagram_handle: recipient.instagram_handle || null,
-          phone_number: recipient.phone_number || null
+          phone_number: (recipient as any).phone_number || null // Safe type assertion for optional field
         }));
         setRecipients(validatedData);
       }
@@ -127,9 +124,9 @@ Thank you for your time. Could you please take down my contact information for a
         position: selectedRecipient.position,
         description: selectedRecipient.description || 'No description available',
         photo_url: selectedRecipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
-        email: selectedRecipient.email || undefined,
+        email: selectedRecipient.email,
         instagram_handle: selectedRecipient.instagram_handle || undefined,
-        phone_number: selectedRecipient.phone_number || undefined
+        phone_number: selectedRecipient.phone_number
       } : null
     });
   }, [formData, recipients]);
@@ -162,8 +159,8 @@ Thank you for your time. Could you please take down my contact information for a
         break;
     }
 
-    if (formData.contactMethod === 'phone') {
-      window.location.href = `tel:${recipient.phone_number?.replace(/[^0-9]/g, '')}`;
+    if (formData.contactMethod === 'phone' && recipient.phone_number) {
+      window.location.href = `tel:${recipient.phone_number.replace(/[^0-9]/g, '')}`;
     }
 
     toast({
