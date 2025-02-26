@@ -43,7 +43,6 @@ interface CampaignFormProps {
     selectedRecipient: {
       name: string;
       position: string;
-      description: string;
       photo_url: string;
       email?: string;
       instagram_handle?: string;
@@ -97,7 +96,6 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
       selectedRecipient: selectedRecipient ? {
         name: selectedRecipient.name,
         position: selectedRecipient.position,
-        description: selectedRecipient.description || 'No description available',
         photo_url: selectedRecipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
         email: selectedRecipient.email,
         instagram_handle: selectedRecipient.instagram_handle || undefined,

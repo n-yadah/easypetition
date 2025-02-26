@@ -4,14 +4,12 @@ import { Card } from "@/components/ui/card";
 interface RecipientCardProps {
   name: string;
   position: string;
-  description: string;
   photoUrl: string;
 }
 
 export default function RecipientCard({
   name,
   position,
-  description,
   photoUrl
 }: RecipientCardProps) {
   return (
@@ -24,8 +22,7 @@ export default function RecipientCard({
         />
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
-          <p className="text-sm text-gray-600 mb-2">{position}</p>
-          <p className="text-sm text-gray-700">{description}</p>
+          <p className="text-sm text-gray-600">{position}</p>
         </div>
       </div>
     </Card>
