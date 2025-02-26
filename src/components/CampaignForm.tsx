@@ -171,7 +171,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 animate-fadeIn bg-gradient-to-br from-white to-gray-50 p-4 sm:p-8 rounded-xl shadow-lg border border-gray-100">
+    <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn bg-white p-6 rounded-xl shadow-lg border border-gray-200">
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Your Name</label>
         <Input
@@ -179,7 +179,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
           value={formData.senderName}
           onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
           placeholder="Enter your name"
-          className="w-full text-base sm:text-sm"
+          className="w-full"
         />
       </div>
 
@@ -205,7 +205,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
 
       <Button 
         type="submit" 
-        className="w-full py-6 text-lg sm:py-4 sm:text-base bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:from-primary/90 hover:to-primary text-white shadow-md"
+        className="w-full py-4 bg-primary text-white shadow-sm hover:bg-primary/90"
       >
         {formData.contactMethod === 'phone' ? 'Start Call' : 'Prepare Message'}
       </Button>

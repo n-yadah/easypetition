@@ -27,7 +27,7 @@ export function MessageTemplate({
             value={subject}
             onChange={(e) => onSubjectChange(e.target.value)}
             placeholder="Enter message subject"
-            className="w-full text-base sm:text-sm"
+            className="w-full"
           />
         </div>
       )}
@@ -40,7 +40,7 @@ export function MessageTemplate({
           value={template}
           onChange={(e) => onTemplateChange(e.target.value)}
           placeholder={contactMethod === 'phone' ? "Enter your call script" : "Enter your message"}
-          className="w-full min-h-[150px] sm:min-h-[200px] bg-white text-base sm:text-sm leading-relaxed"
+          className="w-full min-h-[200px] bg-white"
         />
       </div>
     </div>
