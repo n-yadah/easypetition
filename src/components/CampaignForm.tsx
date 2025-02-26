@@ -1,9 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Instagram } from "lucide-react";
+import { Mail, Instagram, Phone } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -17,8 +18,9 @@ interface Recipient {
   id: string;
   name: string;
   position: string;
-  email: string;
+  email: string | null;
   instagram_handle: string | null;
+  phone_number: string | null;
   photo_url: string | null;
   description: string | null;
   created_at: string;
@@ -28,7 +30,7 @@ interface FormData {
   subject: string;
   template: string;
   selectedRecipientId: string;
-  contactMethod: 'email' | 'instagram';
+  contactMethod: 'email' | 'instagram' | 'phone';
   senderName: string;
 }
 
@@ -38,7 +40,7 @@ interface CampaignFormProps {
     template: string;
     recipientName: string;
     senderName: string;
-    contactMethod: 'email' | 'instagram';
+    contactMethod: 'email' | 'instagram' | 'phone';
     selectedRecipient: {
       name: string;
       position: string;
@@ -46,6 +48,7 @@ interface CampaignFormProps {
       photo_url: string;
       email?: string;
       instagram_handle?: string;
+      phone_number?: string;
     } | null;
   }) => void;
 }
@@ -54,22 +57,26 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     subject: "Urgent Call for Sanctions Against Rwanda to Protect U.S. Economic and National Security Interests",
-    template: `Dear {name},
+    template: `Hi, my name is {sender}.
 
-I am writing to urge your office to support a resolution imposing targeted sanctions against the Rwandan Defense Forces (RDF) and the M23 rebel group due to their destabilizing actions in the Democratic Republic of the Congo (DRC). They have killed more than 3,000 civilians in the span of two weeks and have captured two strategic cities in two of the most mineral rich provinces of the DRC. These activities threaten America's access to strategic minerals, including cobalt and other rare earth elements essential for industries across the United States.
+I'm calling {name} because of [their position as chair/ranking member of the subcommittee].
 
-Executive Order 13413, signed by Presidents Bush and Obama, provides a framework for holding accountable those who contribute to instability in the DRC. Strengthening and enforcing these sanctions against actors like the RDF and M23 will not only help dismantle the predatory system exploiting Congolese resources but also secure an ethical and stable supply chain for U.S. industries reliant on these critical materials.
+I'm calling to urge your office to support a resolution imposing targeted sanctions against the Rwandan Defense Forces (RDF) and the M23 rebel group due to their destabilizing actions in the Democratic Republic of the Congo (DRC).
 
-A secure and transparent supply of cobalt, coltan and other strategic minerals is vital to multiple sectors, including clean energy, technology, defense, and advanced manufacturing. America depends on these materials for battery production, automotive manufacturing, aerospace, and military applications. Continued instability in the DRC, fueled by Rwandan-backed armed groups, threatens U.S. economic and national security interests.
+Key points:
+- The RDF and M23 have killed more than 3,000 civilians in two weeks
+- They've captured strategic cities in mineral-rich provinces
+- This threatens U.S. access to strategic minerals like cobalt
+- Executive Order 13413 provides a framework for sanctions
+- This affects U.S. industries: clean energy, technology, defense, and manufacturing
 
-I urge you to take decisive action in supporting sanctions and advocating for policies that reinforce U.S.-DRC relations and help bring peace to the region. Your leadership is crucial in ensuring that American industries are not left vulnerable to supply chain disruptions caused by Rwanda's military takeover of Congolese territory.
+Can I count on the [Senator/Representative] to support sanctions against Rwanda and M23?
 
-Thank you for your time and consideration. I look forward to your response.
+[Wait for response]
 
-Sincerely,
-{sender}`,
+Thank you for your time. Could you please take down my contact information for a follow-up?`,
     selectedRecipientId: "",
-    contactMethod: 'email',
+    contactMethod: 'phone',
     senderName: "",
   });
   const [recipients, setRecipients] = useState<Recipient[]>([]);
@@ -94,8 +101,9 @@ Sincerely,
           ...recipient,
           photo_url: recipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
           description: recipient.description || 'No description available',
-          email: recipient.email || '',
-          instagram_handle: recipient.instagram_handle || null
+          email: recipient.email || null,
+          instagram_handle: recipient.instagram_handle || null,
+          phone_number: recipient.phone_number || null
         }));
         setRecipients(validatedData);
       }
@@ -117,8 +125,9 @@ Sincerely,
         position: selectedRecipient.position,
         description: selectedRecipient.description || 'No description available',
         photo_url: selectedRecipient.photo_url || 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
-        email: selectedRecipient.email,
-        instagram_handle: selectedRecipient.instagram_handle || undefined
+        email: selectedRecipient.email || undefined,
+        instagram_handle: selectedRecipient.instagram_handle || undefined,
+        phone_number: selectedRecipient.phone_number || undefined
       } : null
     });
   }, [formData, recipients]);
@@ -138,11 +147,27 @@ Sincerely,
     const recipient = recipients.find(r => r.id === formData.selectedRecipientId);
     if (!recipient) return;
 
-    const contactInfo = formData.contactMethod === 'email' ? recipient.email : recipient.instagram_handle;
+    let contactInfo;
+    switch (formData.contactMethod) {
+      case 'email':
+        contactInfo = recipient.email;
+        break;
+      case 'instagram':
+        contactInfo = recipient.instagram_handle;
+        break;
+      case 'phone':
+        contactInfo = recipient.phone_number;
+        break;
+    }
+
+    if (formData.contactMethod === 'phone') {
+      // For phone calls, open the phone dialer
+      window.location.href = `tel:${recipient.phone_number?.replace(/[^0-9]/g, '')}`;
+    }
 
     toast({
-      title: "Message Ready",
-      description: `Your message will be sent to ${recipient.name} via ${formData.contactMethod} (${contactInfo})`,
+      title: "Ready to Contact",
+      description: `${formData.contactMethod === 'phone' ? 'Calling' : 'Your message will be sent to'} ${recipient.name} via ${formData.contactMethod} (${contactInfo})`,
     });
   };
 
@@ -162,6 +187,15 @@ Sincerely,
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Select Contact Method</label>
         <div className="flex gap-4">
+          <Button
+            type="button"
+            variant={formData.contactMethod === 'phone' ? 'default' : 'outline'}
+            className="flex-1 flex items-center justify-center gap-2"
+            onClick={() => setFormData({ ...formData, contactMethod: 'phone' })}
+          >
+            <Phone className="w-4 h-4" />
+            Phone
+          </Button>
           <Button
             type="button"
             variant={formData.contactMethod === 'email' ? 'default' : 'outline'}
@@ -207,9 +241,18 @@ Sincerely,
           </SelectTrigger>
           <SelectContent>
             {recipients
-              .filter(recipient => 
-                formData.contactMethod === 'email' ? recipient.email : recipient.instagram_handle
-              )
+              .filter(recipient => {
+                switch (formData.contactMethod) {
+                  case 'email':
+                    return recipient.email;
+                  case 'instagram':
+                    return recipient.instagram_handle;
+                  case 'phone':
+                    return recipient.phone_number;
+                  default:
+                    return false;
+                }
+              })
               .map((recipient) => (
                 <SelectItem key={recipient.id} value={recipient.id}>
                   {recipient.name} - {recipient.position}
@@ -220,18 +263,20 @@ Sincerely,
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">Message Template</label>
+        <label className="text-sm font-medium text-gray-700">
+          {formData.contactMethod === 'phone' ? 'Call Script' : 'Message Template'}
+        </label>
         <p className="text-xs text-gray-500">Use {'{name}'} for recipient name and {'{sender}'} for your name</p>
         <Textarea
           value={formData.template}
           onChange={(e) => setFormData({ ...formData, template: e.target.value })}
-          placeholder="Enter your message"
+          placeholder={formData.contactMethod === 'phone' ? "Enter your call script" : "Enter your message"}
           className="w-full min-h-[200px] bg-white"
         />
       </div>
 
       <Button type="submit" className="w-full bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:from-primary/90 hover:to-primary text-white shadow-md">
-        Prepare Message
+        {formData.contactMethod === 'phone' ? 'Start Call' : 'Prepare Message'}
       </Button>
     </form>
   );
