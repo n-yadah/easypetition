@@ -16,17 +16,18 @@ export default function RecipientCard({
   const [imageError, setImageError] = useState(false);
   const fallbackImage = "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843"; // Nature fallback image
 
-  console.log('Image URL received:', photoUrl); // Debug log
+  // Convert relative path to absolute path for public directory
+  const fullImageUrl = photoUrl?.startsWith('/') ? photoUrl.replace('/lovable-uploads/', '/public/lovable-uploads/') : photoUrl;
 
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
       <div className="flex items-start gap-4">
         <img
-          src={imageError ? fallbackImage : photoUrl}
+          src={imageError ? fallbackImage : fullImageUrl}
           alt={`${name}'s photo`}
           className="w-24 h-24 rounded-lg object-cover bg-gray-100"
           onError={(e) => {
-            console.log('Image failed to load:', photoUrl); // Debug log
+            console.log('Image failed to load:', fullImageUrl); // Debug log
             setImageError(true);
           }}
         />
