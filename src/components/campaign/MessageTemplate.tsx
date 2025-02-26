@@ -18,7 +18,7 @@ export function MessageTemplate({
   onTemplateChange
 }: MessageTemplateProps) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full">
       {contactMethod === 'email' && (
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Subject</label>
@@ -35,7 +35,7 @@ export function MessageTemplate({
         <label className="text-sm font-medium text-gray-700">
           {contactMethod === 'phone' ? 'Call Script' : 'Message Template'}
         </label>
-        <p className="text-xs text-gray-500">Use {'{name}'} for recipient name and {'{sender}'} for your name</p>
+        <p className="text-xs text-gray-500 break-normal">Use {'{name}'} for recipient name and {'{sender}'} for your name</p>
         <Textarea
           value={template}
           onChange={(e) => onTemplateChange(e.target.value)}

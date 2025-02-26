@@ -171,7 +171,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+    <form onSubmit={handleSubmit} className="space-y-4 animate-fadeIn bg-white px-3 py-4 md:p-6 rounded-xl shadow-lg border border-gray-200 max-w-full">
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Your Name</label>
         <Input
