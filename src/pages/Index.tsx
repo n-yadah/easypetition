@@ -9,15 +9,14 @@ interface FormState {
   template: string;
   recipientName: string;
   senderName: string;
-  contactMethod: 'email' | 'instagram' | 'phone'; // Added 'phone' to allowed types
+  contactMethod: 'email' | 'instagram' | 'phone';
   selectedRecipient: {
     name: string;
     position: string;
-    description: string;
     photo_url: string;
     email?: string;
     instagram_handle?: string;
-    phone_number?: string; // Added phone_number field
+    phone_number?: string;
   } | null;
 }
 
@@ -31,7 +30,7 @@ const Index = () => {
     selectedRecipient: null
   });
 
-  const handleFormUpdate = (data: Partial<FormState>) => {
+  const handleFormUpdate = (data: FormState) => {
     setFormState(prev => ({ ...prev, ...data }));
   };
 
@@ -58,7 +57,6 @@ const Index = () => {
                 <RecipientCard
                   name={formState.selectedRecipient.name}
                   position={formState.selectedRecipient.position}
-                  description={formState.selectedRecipient.description}
                   photoUrl={formState.selectedRecipient.photo_url}
                 />
               )}
