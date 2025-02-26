@@ -14,8 +14,8 @@ export default function RecipientCard({
   photoUrl
 }: RecipientCardProps) {
   const [imageError, setImageError] = useState(false);
-  // Using a different Unsplash image as fallback - a code editor screenshot which is more relevant
-  const fallbackImage = "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7";
+  // Using Ted Cruz's portrait as fallback
+  const fallbackImage = "https://upload.wikimedia.org/wikipedia/commons/8/87/Ted_Cruz%2C_official_portrait%2C_113th_Congress.jpg";
 
   console.log('Attempting to load image:', photoUrl);
 
