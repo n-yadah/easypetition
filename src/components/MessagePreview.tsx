@@ -33,10 +33,19 @@ export default function MessagePreview({
       const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject || '')}&body=${encodeURIComponent(previewMessage)}`;
       window.location.href = mailtoLink;
     } else if (contactMethod === 'instagram' && instagramHandle) {
-      window.location.href = `instagram://user?username=${instagramHandle.replace('@', '')}`;
-      setTimeout(() => {
-        window.location.href = `https://instagram.com/${instagramHandle.replace('@', '')}`;
-      }, 500);
+      // Create Instagram DM link with pre-populated message
+      const instagramUrl = `https://www.instagram.com/direct/t/${instagramHandle}`;
+      // Open Instagram in a new tab
+      window.open(instagramUrl, '_blank');
+      
+      // Copy message to clipboard for easy pasting
+      navigator.clipboard.writeText(previewMessage).then(() => {
+        // Show toast notification that message was copied (handled by parent component)
+        const event = new CustomEvent('messagecopied', { 
+          detail: 'Message copied to clipboard. Paste it in Instagram DM.'
+        });
+        window.dispatchEvent(event);
+      });
     } else if (contactMethod === 'phone' && phoneNumber) {
       window.location.href = `tel:${phoneNumber.replace(/[^0-9]/g, '')}`;
     }
@@ -64,6 +73,13 @@ export default function MessagePreview({
         </div>
       )}
 
+      {contactMethod === 'instagram' && instagramHandle && (
+        <div className="mb-4">
+          <p className="text-sm text-gray-500">Instagram Handle:</p>
+          <p className="text-gray-700">@{instagramHandle}</p>
+        </div>
+      )}
+
       {contactMethod === 'phone' && phoneNumber && (
         <div className="mb-4">
           <p className="text-sm text-gray-500">Phone Number:</p>
@@ -80,7 +96,11 @@ export default function MessagePreview({
         onClick={handleSendMessage}
         className="w-full bg-primary hover:bg-primary/90"
       >
-        {contactMethod === 'phone' ? 'Call Now' : `Send Message via ${contactMethod === 'email' ? 'Email' : 'Instagram'}`}
+        {contactMethod === 'phone' 
+          ? 'Call Now' 
+          : contactMethod === 'instagram'
+          ? 'Open Instagram DM'
+          : 'Send Email'}
       </Button>
     </Card>
   );

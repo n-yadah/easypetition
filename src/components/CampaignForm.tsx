@@ -131,6 +131,20 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
     }));
   }, [formData.contactMethod]);
 
+  useEffect(() => {
+    const handleMessageCopied = (event: CustomEvent<string>) => {
+      toast({
+        title: "Message Ready",
+        description: event.detail,
+      });
+    };
+
+    window.addEventListener('messagecopied', handleMessageCopied as EventListener);
+    return () => {
+      window.removeEventListener('messagecopied', handleMessageCopied as EventListener);
+    };
+  }, [toast]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
