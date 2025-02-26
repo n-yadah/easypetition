@@ -1,5 +1,6 @@
 
 import { Card } from "@/components/ui/card";
+import { useState } from "react";
 
 interface RecipientCardProps {
   name: string;
@@ -12,13 +13,17 @@ export default function RecipientCard({
   position,
   photoUrl
 }: RecipientCardProps) {
+  const [imageError, setImageError] = useState(false);
+  const fallbackImage = "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843"; // Nature fallback image
+
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
       <div className="flex items-start gap-4">
         <img
-          src={photoUrl}
-          alt={name}
-          className="w-24 h-24 rounded-lg object-cover"
+          src={imageError ? fallbackImage : photoUrl}
+          alt={`${name}'s photo`}
+          className="w-24 h-24 rounded-lg object-cover bg-gray-100"
+          onError={() => setImageError(true)}
         />
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
