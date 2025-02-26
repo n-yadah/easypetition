@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,7 +45,7 @@ interface CampaignFormProps {
   }) => void;
 }
 
-const DEFAULT_TEMPLATE = `Dear {name},
+const EMAIL_TEMPLATE = `Dear {name},
 
 I am writing to urge your office to support a resolution imposing targeted sanctions against the Rwandan Defense Forces (RDF) and the M23 rebel group due to their destabilizing actions in the Democratic Republic of the Congo (DRC). They have killed more than 3,000 civilians in the span of two weeks and have captured two strategic cities in two of the most mineral rich provinces of the DRC. These activities threaten America's access to strategic minerals, including cobalt and other rare earth elements essential for industries across the United States.
 
@@ -61,17 +60,26 @@ Thank you for your time and consideration. I look forward to your response.
 Sincerely,
 {sender}`;
 
+const PHONE_TEMPLATE = `Hello, my name is {sender}. I am reaching out to urge you to take immediate action regarding the ongoing crisis in the Democratic Republic of The Congo.
+
+The Rwandan government is actively supporting the M23 rebel group, which has captured the city of Goma, displacing thousands of civilians and escalating violence in the region. This occupation represents a clear violation of Congolese sovereignty and is causing immense suffering.
+
+In 2013, the United States successfully pressured Rwanda by threatening to suspend foreign aid, which forced the M23 to retreat. We are calling on you to push the U.S. government to take similar measures today by imposing sanctions on Rwanda or suspending aid until they cease their support to the M23.
+
+Sanctions can save lives and restore peace in the Great Lakes region. Please act now to stop the violence and support justice. Thank you for your time and leadership.`;
+
 const DEFAULT_SUBJECT = "Urgent Call for Sanctions Against Rwanda to Protect U.S. Economic and National Security Interests";
 
 export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     subject: DEFAULT_SUBJECT,
-    template: DEFAULT_TEMPLATE,
+    template: EMAIL_TEMPLATE,
     selectedRecipientId: "",
     contactMethod: 'phone',
     senderName: "",
   });
+
   const [recipients, setRecipients] = useState<Recipient[]>([]);
 
   useEffect(() => {
@@ -115,6 +123,13 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
       } : null
     });
   }, [formData, recipients]);
+
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      template: formData.contactMethod === 'phone' ? PHONE_TEMPLATE : EMAIL_TEMPLATE
+    }));
+  }, [formData.contactMethod]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
