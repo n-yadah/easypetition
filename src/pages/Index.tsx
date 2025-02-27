@@ -53,7 +53,7 @@ Sincerely,
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
             <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-2 leading-relaxed py-1">
-              Act to Save Congolese Lives
+              Save Congolese Lives
             </h1>
             <p className="text-lg text-gray-600 mb-4">
               Make your voice heard to help bring peace and stability to the region
