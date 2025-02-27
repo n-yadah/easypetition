@@ -38,7 +38,7 @@ export function useRecipients() {
           if (recipient.name === 'Sara Jacobs') {
             return {
               ...recipient,
-              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Rep._Sara_Jacobs_Official_Portrait_117th_Congress.jpg'
+              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/1/15/Representative_Sara_Jacobs_full_portrait.jpg'
             };
           }
           return recipient;
