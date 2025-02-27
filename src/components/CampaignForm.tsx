@@ -7,7 +7,7 @@ import { ContactMethodSelector } from "./campaign/ContactMethodSelector";
 import { RecipientSelector } from "./campaign/RecipientSelector";
 import { MessageTemplate } from "./campaign/MessageTemplate";
 import { useRecipients } from "@/hooks/useRecipients";
-import { EMAIL_TEMPLATE, PHONE_TEMPLATE, DEFAULT_SUBJECT } from "@/constants/messageTemplates";
+import { EMAIL_TEMPLATE, INSTAGRAM_TEMPLATE, PHONE_TEMPLATE, DEFAULT_SUBJECT } from "@/constants/messageTemplates";
 import type { FormData, CampaignFormProps } from "@/types/campaign";
 
 export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
@@ -50,9 +50,21 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
   }, [formData, recipients, onFormUpdate]);
 
   useEffect(() => {
+    let newTemplate;
+    switch (formData.contactMethod) {
+      case 'phone':
+        newTemplate = PHONE_TEMPLATE;
+        break;
+      case 'instagram':
+        newTemplate = INSTAGRAM_TEMPLATE;
+        break;
+      default:
+        newTemplate = EMAIL_TEMPLATE;
+    }
+    
     setFormData(prev => ({
       ...prev,
-      template: formData.contactMethod === 'phone' ? PHONE_TEMPLATE : EMAIL_TEMPLATE
+      template: newTemplate
     }));
   }, [formData.contactMethod]);
 

@@ -14,6 +14,12 @@ Thank you for your time and consideration. I look forward to your response.
 Sincerely,
 {sender}`;
 
+export const INSTAGRAM_TEMPLATE = `Hi {name}, I'm concerned about the crisis in DR Congo. The M23 rebels, backed by Rwanda, have killed over 3,000 civilians and captured strategic mineral-rich areas. This threatens US access to cobalt and other critical minerals.
+
+Please support sanctions against Rwanda's Defense Forces and M23 under Executive Order 13413 to protect both Congolese lives and US interests.
+
+Thank you, {sender}`;
+
 export const PHONE_TEMPLATE = `Hello, my name is {sender}. I'm calling about the crisis in DR Congo.
 
 The M23 rebels, backed by Rwanda, have captured Goma and displaced thousands. This violates Congo's sovereignty and threatens U.S. interests.
