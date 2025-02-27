@@ -7,50 +7,42 @@ import type { Recipient } from "@/types/campaign";
 export function useRecipients() {
   const { toast } = useToast();
   const [recipients, setRecipients] = useState<Recipient[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRecipients = async () => {
-      console.log('Fetching recipients...');
+      setIsLoading(true);
+      console.log('useRecipients: Fetching recipients from Supabase...');
       
-      const { data, error } = await supabase
-        .from('recipients')
-        .select('*');
-      
-      if (error) {
-        console.error('Error fetching recipients:', error);
+      try {
+        const { data, error } = await supabase
+          .from('recipients')
+          .select('*');
+        
+        if (error) {
+          throw error;
+        }
+
+        if (data && Array.isArray(data)) {
+          console.log('useRecipients: Successfully fetched', data.length, 'recipients');
+          
+          // Note: We'll let the RecipientCard component handle specific image URLs
+          // to avoid any confusion in the data flow
+          setRecipients(data);
+        } else {
+          console.warn('useRecipients: No data returned or invalid format');
+          setRecipients([]);
+        }
+      } catch (error: any) {
+        console.error('useRecipients: Error fetching recipients:', error);
         toast({
           title: "Error loading recipients",
-          description: error.message,
+          description: error.message || "Could not load recipients",
           variant: "destructive",
         });
-        return;
-      }
-
-      if (data) {
-        console.log('Original data:', data);
-        
-        // Create new array with updated photo URLs
-        const updatedData = data.map(recipient => {
-          console.log('Processing recipient:', recipient.name);
-          
-          if (recipient.name === 'Sara Jacobs') {
-            console.log('Updating Sara Jacobs photo URL');
-            return {
-              ...recipient,
-              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/1/15/Representative_Sara_Jacobs_full_portrait.jpg'
-            };
-          }
-          if (recipient.name === 'Ted Cruz') {
-            return {
-              ...recipient,
-              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg'
-            };
-          }
-          return recipient;
-        });
-        
-        console.log('Updated data:', updatedData);
-        setRecipients(updatedData);
+        setRecipients([]);
+      } finally {
+        setIsLoading(false);
       }
     };
 
