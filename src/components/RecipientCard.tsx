@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 interface RecipientCardProps {
   name: string;
@@ -14,47 +14,34 @@ export default function RecipientCard({
   photoUrl
 }: RecipientCardProps) {
   const [imageError, setImageError] = useState(false);
-  const [imageSrc, setImageSrc] = useState('');
-  const initialRenderDone = useRef(false);
   
   // Using a generic avatar as fallback
   const fallbackImage = "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7";
 
-  // Hard-coded image mapping for specific recipients
-  const getImageForRecipient = (recipientName: string) => {
-    const imageMap: Record<string, string> = {
-      "Sara Jacobs": "https://upload.wikimedia.org/wikipedia/commons/1/15/Representative_Sara_Jacobs_full_portrait.jpg",
-      "Ted Cruz": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg"
-    };
-    
-    return imageMap[recipientName] || photoUrl;
-  };
-
-  // Initialize image source on mount and when props change
-  useEffect(() => {
-    console.log(`RecipientCard: Setting up image for ${name}. Photo URL:`, photoUrl);
-    const correctImageSrc = getImageForRecipient(name);
-    console.log(`RecipientCard: Using image source for ${name}:`, correctImageSrc);
-    setImageSrc(correctImageSrc);
-    setImageError(false);
-    initialRenderDone.current = true;
-  }, [name, photoUrl]);
-
-  // Use the managed imageSrc with fallback
-  const displayImageSrc = !initialRenderDone.current || imageError || !imageSrc ? fallbackImage : imageSrc;
+  // Get direct image URL based on recipient name
+  let displayImage = photoUrl;
   
-  console.log(`RecipientCard render for ${name} - Final image source:`, displayImageSrc);
+  // Direct image URLs for specific recipients - these are reliable sources
+  if (name === "Sara Jacobs") {
+    displayImage = "https://www.congress.gov/img/member/j000294_200.jpg";
+  } else if (name === "Ted Cruz") {
+    displayImage = "https://www.congress.gov/img/member/c001098_200.jpg";
+  }
+  
+  // Use fallback if there's an error
+  const finalImageUrl = imageError ? fallbackImage : displayImage;
+  
+  console.log(`RecipientCard for ${name}: Using image source:`, finalImageUrl);
 
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
       <div className="flex items-start gap-4">
         <img
-          key={`${name}-${displayImageSrc}`} // Force re-render of image when source changes
-          src={displayImageSrc}
+          src={finalImageUrl}
           alt={`${name}'s photo`}
           className="w-24 h-24 rounded-lg object-cover bg-gray-100"
-          onError={(e) => {
-            console.error(`Image failed to load for ${name}:`, displayImageSrc);
+          onError={() => {
+            console.error(`Image failed to load for ${name}, using fallback`);
             setImageError(true);
           }}
         />
