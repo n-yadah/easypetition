@@ -22,6 +22,8 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
     senderName: "",
   });
 
+  const [contactInfoMessage, setContactInfoMessage] = useState<string | null>(null);
+
   // Log the recipient data for debugging
   useEffect(() => {
     console.log("Available recipients:", recipients);
@@ -84,23 +86,35 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
 
   // Check if selected recipient has data for the current contact method
   const handleContactMethodChange = (method: 'email' | 'instagram' | 'phone') => {
-    const currentRecipient = recipients.find(r => r.id === formData.selectedRecipientId);
     setFormData(prev => ({ ...prev, contactMethod: method }));
     
-    // If current recipient doesn't have data for new contact method, show a toast
-    if (currentRecipient) {
+    // When changing contact method, clear the recipient selection
+    setFormData(prev => ({ 
+      ...prev, 
+      contactMethod: method,
+      selectedRecipientId: "" 
+    }));
+    
+    // Clear any previous message
+    setContactInfoMessage(null);
+  };
+
+  const handleRecipientChange = (id: string) => {
+    const recipient = recipients.find(r => r.id === id);
+    setFormData(prev => ({ ...prev, selectedRecipientId: id }));
+    
+    // Clear any previous message
+    setContactInfoMessage(null);
+    
+    // Check if the recipient has the selected contact method
+    if (recipient) {
       const hasContactData = 
-        (method === 'email' && currentRecipient.email) ||
-        (method === 'instagram' && currentRecipient.instagram_handle) ||
-        (method === 'phone' && currentRecipient.phone_number);
+        (formData.contactMethod === 'email' && recipient.email) ||
+        (formData.contactMethod === 'instagram' && recipient.instagram_handle) ||
+        (formData.contactMethod === 'phone' && recipient.phone_number);
       
       if (!hasContactData) {
-        toast({
-          title: "Contact Information Unavailable",
-          description: `${currentRecipient.name} doesn't have ${method} contact information. Please select another recipient.`,
-          variant: "destructive",
-        });
-        // Don't clear selection - let user see the issue and select a new recipient
+        setContactInfoMessage(`${recipient.name} doesn't have ${formData.contactMethod} contact information available.`);
       }
     }
   };
@@ -161,12 +175,20 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
         onMethodChange={handleContactMethodChange}
       />
 
-      <RecipientSelector
-        recipients={recipients}
-        selectedRecipientId={formData.selectedRecipientId}
-        onRecipientChange={(id) => setFormData({ ...formData, selectedRecipientId: id })}
-        contactMethod={formData.contactMethod}
-      />
+      <div className="space-y-2">
+        <RecipientSelector
+          recipients={recipients}
+          selectedRecipientId={formData.selectedRecipientId}
+          onRecipientChange={handleRecipientChange}
+          contactMethod={formData.contactMethod}
+        />
+        
+        {contactInfoMessage && (
+          <div className="text-amber-600 text-sm mt-1 px-1">
+            {contactInfoMessage}
+          </div>
+        )}
+      </div>
 
       <MessageTemplate
         subject={formData.subject}
@@ -179,6 +201,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
       <Button 
         type="submit" 
         className="w-full py-4 bg-primary text-white shadow-sm hover:bg-primary/90"
+        disabled={!!contactInfoMessage || !formData.selectedRecipientId}
       >
         {formData.contactMethod === 'phone' ? 'Start Call' : 'Prepare Message'}
       </Button>

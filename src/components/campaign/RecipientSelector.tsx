@@ -30,8 +30,7 @@ export function RecipientSelector({
   onRecipientChange,
   contactMethod
 }: RecipientSelectorProps) {
-  // Filter recipients based on contact method but don't exclude any recipient completely
-  // This will show all recipients, but we'll differentiate which ones have valid contact info
+  // Filter recipients based on contact method but just for visual indication
   const filteredRecipients = recipients.map(recipient => {
     let hasContactInfo = false;
     switch (contactMethod) {
@@ -68,13 +67,12 @@ export function RecipientSelector({
         <SelectTrigger className="w-full bg-white">
           <SelectValue placeholder="Choose a decision maker" />
         </SelectTrigger>
-        <SelectContent className="max-w-[95vw] sm:max-w-[400px]">
+        <SelectContent className="max-w-[95vw] sm:max-w-[400px] bg-white">
           {filteredRecipients.map((recipient) => (
             <SelectItem 
               key={recipient.id} 
               value={recipient.id}
-              disabled={!recipient.hasContactInfo}
-              className={!recipient.hasContactInfo ? "opacity-50" : ""}
+              className={!recipient.hasContactInfo ? "text-gray-500" : ""}
             >
               <div className="flex items-center gap-3 w-full">
                 <span className="flex-shrink-0">🇺🇸</span>
@@ -82,6 +80,9 @@ export function RecipientSelector({
                   {recipient.name} - {recipient.position}
                   {contactMethod === 'instagram' && recipient.instagram_handle && (
                     <span className="text-xs ml-1 text-primary">(@{recipient.instagram_handle})</span>
+                  )}
+                  {!recipient.hasContactInfo && (
+                    <span className="text-xs ml-1 text-amber-600">(no {contactMethod})</span>
                   )}
                 </span>
               </div>
