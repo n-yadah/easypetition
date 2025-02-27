@@ -76,7 +76,7 @@ export function RecipientSelector({
               className={!recipient.hasContactInfo ? "opacity-50" : ""}
             >
               <div className="flex items-center">
-                <span className="mr-2">🇺🇸</span>
+                <span className="mr-3">🇺🇸</span>
                 <span className="truncate max-w-[260px] inline-block">{recipient.name} - {recipient.position}</span>
                 {!recipient.hasContactInfo && <span className="ml-1">(No contact info)</span>}
               </div>
