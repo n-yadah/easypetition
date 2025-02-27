@@ -17,6 +17,15 @@ export function MessageTemplate({
   onSubjectChange,
   onTemplateChange
 }: MessageTemplateProps) {
+  // Function to format the template when it's loaded initially
+  const formatTemplateText = (text: string): string => {
+    if (contactMethod === 'instagram') {
+      // For Instagram, we want to reduce extra line breaks
+      return text.replace(/\n{3,}/g, '\n\n').trim();
+    }
+    return text;
+  };
+
   return (
     <div className="space-y-3 w-full">
       {contactMethod === 'email' && (
@@ -41,7 +50,7 @@ export function MessageTemplate({
             : "Use {name} for recipient name and {sender} for your name"}
         </p>
         <Textarea
-          value={template}
+          value={formatTemplateText(template)}
           onChange={(e) => onTemplateChange(e.target.value)}
           placeholder={contactMethod === 'phone' ? "Enter your call script" : "Enter your message"}
           className="w-full min-h-[200px] bg-white"
