@@ -75,9 +75,9 @@ export function RecipientSelector({
               disabled={!recipient.hasContactInfo}
               className={!recipient.hasContactInfo ? "opacity-50" : ""}
             >
-              <div className="flex min-w-0">
+              <div className="flex items-start w-full overflow-hidden">
                 <span className="mr-1 flex-shrink-0">🇺🇸</span>
-                <span className="truncate">{recipient.name} - {recipient.position}</span>
+                <span className="truncate overflow-ellipsis">{recipient.name} - {recipient.position}</span>
               </div>
               {!recipient.hasContactInfo && " (No contact info)"}
             </SelectItem>
