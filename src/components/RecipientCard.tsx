@@ -21,10 +21,12 @@ export default function RecipientCard({
 
   // Get direct image URL based on recipient name
   let displayImage = photoUrl;
+  let email;
   
   // Direct image URLs for specific recipients - these are reliable sources
   if (name === "Sara Jacobs") {
     displayImage = "https://www.congress.gov/img/member/j000305_200.jpg";
+    email = "sara@sarajacobsforca.com";
   } else if (name === "Ted Cruz") {
     displayImage =  "https://www.congress.gov/img/member/c001098_200.jpg";
   } else if (name === "Chris Smith") {
@@ -53,6 +55,9 @@ export default function RecipientCard({
         <div>
           <h3 className="text-lg font-semibold">{name}</h3>
           <p className="text-sm text-gray-600">{position}</p>
+          {email && (
+            <p className="text-xs text-primary mt-1">{email}</p>
+          )}
         </div>
       </div>
     </Card>
