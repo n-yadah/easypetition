@@ -67,7 +67,7 @@ export function RecipientSelector({
         <SelectTrigger className="w-full bg-white">
           <SelectValue placeholder="Choose a decision maker" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-w-[95vw] sm:max-w-[400px]">
           {filteredRecipients.map((recipient) => (
             <SelectItem 
               key={recipient.id} 
@@ -75,10 +75,10 @@ export function RecipientSelector({
               disabled={!recipient.hasContactInfo}
               className={!recipient.hasContactInfo ? "opacity-50" : ""}
             >
-              <div className="flex items-center">
-                <span className="mr-3">🇺🇸</span>
-                <span className="truncate max-w-[260px] inline-block">{recipient.name} - {recipient.position}</span>
-                {!recipient.hasContactInfo && <span className="ml-1">(No contact info)</span>}
+              <div className="flex items-center gap-3 w-full">
+                <span className="flex-shrink-0">🇺🇸</span>
+                <span className="truncate max-w-[180px] sm:max-w-[230px] inline-block">{recipient.name} - {recipient.position}</span>
+                {!recipient.hasContactInfo && <span className="ml-auto flex-shrink-0 text-xs">(No contact info)</span>}
               </div>
             </SelectItem>
           ))}
