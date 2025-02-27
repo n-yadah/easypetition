@@ -14,26 +14,29 @@ export default function RecipientCard({
   photoUrl
 }: RecipientCardProps) {
   const [imageError, setImageError] = useState(false);
-  const [currentPhotoUrl, setCurrentPhotoUrl] = useState(photoUrl);
   // Using a generic avatar as fallback
   const fallbackImage = "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7";
 
+  // Reset error state when photo URL changes
   useEffect(() => {
+    console.log('Photo URL changed to:', photoUrl);
     setImageError(false);
-    setCurrentPhotoUrl(photoUrl);
   }, [photoUrl]);
 
-  console.log('RecipientCard render - Current photo URL:', currentPhotoUrl);
+  // Early check for empty or null photoUrl
+  const imageSource = (!photoUrl || imageError) ? fallbackImage : photoUrl;
+  
+  console.log('RecipientCard render - Using image source:', imageSource);
 
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
       <div className="flex items-start gap-4">
         <img
-          src={imageError ? fallbackImage : currentPhotoUrl}
+          src={imageSource}
           alt={`${name}'s photo`}
           className="w-24 h-24 rounded-lg object-cover bg-gray-100"
           onError={(e) => {
-            console.error('Image failed to load:', currentPhotoUrl);
+            console.error('Image failed to load:', imageSource);
             setImageError(true);
           }}
         />
