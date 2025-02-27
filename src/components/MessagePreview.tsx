@@ -24,8 +24,12 @@ export default function MessagePreview({
   email,
   phoneNumber
 }: MessagePreviewProps) {
+  // Extract first name for Instagram messages
+  const firstName = recipientName ? recipientName.split(' ')[0] : "Recipient";
+  
   const previewMessage = template
     .replace(/{name}/g, recipientName)
+    .replace(/{firstname}/g, firstName)
     .replace(/{sender}/g, senderName);
 
   const handleSendMessage = () => {

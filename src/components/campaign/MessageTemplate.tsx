@@ -35,7 +35,11 @@ export function MessageTemplate({
         <label className="text-sm font-medium text-gray-700">
           {contactMethod === 'phone' ? 'Call Script' : 'Message Template'}
         </label>
-        <p className="text-xs text-gray-500 break-normal">Use {'{name}'} for recipient name and {'{sender}'} for your name</p>
+        <p className="text-xs text-gray-500 break-normal">
+          {contactMethod === 'instagram' 
+            ? "Use {firstname} for recipient's first name, {name} for full name, and {sender} for your name" 
+            : "Use {name} for recipient name and {sender} for your name"}
+        </p>
         <Textarea
           value={template}
           onChange={(e) => onTemplateChange(e.target.value)}
