@@ -49,10 +49,10 @@ Sincerely,
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-2 sm:px-4 py-8 sm:py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-2 leading-relaxed py-1">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-2 leading-relaxed py-1">
               Take Action for Change
             </h1>
             <p className="text-lg text-gray-600 mb-4">
@@ -60,7 +60,7 @@ Sincerely,
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div className="space-y-6">
               <CampaignForm onFormUpdate={handleFormUpdate} />
             </div>
