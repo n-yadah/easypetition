@@ -12,24 +12,6 @@ export function useRecipients() {
     const fetchRecipients = async () => {
       console.log('Fetching recipients...');
       
-      // First update Ted Cruz's photo
-      const { error: updateError } = await supabase
-        .from('recipients')
-        .update({ 
-          photo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg' 
-        })
-        .eq('name', 'Ted Cruz');
-
-      if (updateError) {
-        console.error('Error updating Ted Cruz photo:', updateError);
-        toast({
-          title: "Error updating photo",
-          description: updateError.message,
-          variant: "destructive",
-        });
-      }
-
-      // Then fetch all recipients
       const { data, error } = await supabase
         .from('recipients')
         .select('*');
@@ -45,8 +27,19 @@ export function useRecipients() {
       }
 
       if (data) {
-        console.log('Recipients data:', data);
-        setRecipients(data);
+        // Modify Ted Cruz's photo URL in the response data
+        const updatedData = data.map(recipient => {
+          if (recipient.name === 'Ted Cruz') {
+            return {
+              ...recipient,
+              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg'
+            };
+          }
+          return recipient;
+        });
+        
+        console.log('Recipients data:', updatedData);
+        setRecipients(updatedData);
       }
     };
 
