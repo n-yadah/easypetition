@@ -56,7 +56,7 @@ Sincerely,
               Save Congolese Lives
             </h1>
             <p className="text-lg text-gray-600 mb-4">
-              Make your voice heard to help bring peace and stability to the region
+              Make your voice heard to help bring peace and stability to the DR Congo.
             </p>
           </div>
 
