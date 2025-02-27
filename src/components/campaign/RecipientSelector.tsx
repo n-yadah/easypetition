@@ -11,7 +11,7 @@ interface Recipient {
   id: string;
   name: string;
   position: string;
-  email: string;
+  email: string | null;
   instagram_handle: string | null;
   photo_url: string | null;
   phone_number?: string;

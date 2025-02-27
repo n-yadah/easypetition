@@ -31,6 +31,7 @@ export default function RecipientCard({
     displayImage =  "https://www.congress.gov/img/member/c001098_200.jpg";
   } else if (name === "Chris Smith") {
     displayImage = "https://www.congress.gov/img/member/s000522_200.jpg";
+    // Chris Smith's email has been removed in the database
   } else if (name === "Cory Booker") {
     displayImage = "https://www.congress.gov/img/member/b001288_200.jpg";
   }

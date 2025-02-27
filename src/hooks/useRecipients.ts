@@ -26,9 +26,16 @@ export function useRecipients() {
         if (data && Array.isArray(data)) {
           console.log('useRecipients: Successfully fetched', data.length, 'recipients');
           
-          // Note: We'll let the RecipientCard component handle specific image URLs
-          // to avoid any confusion in the data flow
-          setRecipients(data);
+          // Process the recipients
+          const processedRecipients = data.map(recipient => {
+            // Mark empty strings as null for better handling in UI
+            return {
+              ...recipient,
+              email: recipient.email && recipient.email.trim() !== '' ? recipient.email : null,
+            };
+          });
+          
+          setRecipients(processedRecipients);
         } else {
           console.warn('useRecipients: No data returned or invalid format');
           setRecipients([]);
