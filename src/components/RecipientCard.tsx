@@ -1,6 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import { Instagram } from "lucide-react";
 
 interface RecipientCardProps {
   name: string;

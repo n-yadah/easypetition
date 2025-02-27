@@ -54,7 +54,8 @@ export function RecipientSelector({
     id: r.id,
     name: r.name,
     hasContactInfo: r.hasContactInfo,
-    contactMethod
+    contactMethod,
+    instagramHandle: r.instagram_handle
   })));
 
   return (
@@ -77,7 +78,12 @@ export function RecipientSelector({
             >
               <div className="flex items-center gap-3 w-full">
                 <span className="flex-shrink-0">🇺🇸</span>
-                <span className="truncate max-w-[250px] sm:max-w-[300px] inline-block">{recipient.name} - {recipient.position}</span>
+                <span className="truncate max-w-[250px] sm:max-w-[300px] inline-block">
+                  {recipient.name} - {recipient.position}
+                  {contactMethod === 'instagram' && recipient.instagram_handle && (
+                    <span className="text-xs ml-1 text-primary">(@{recipient.instagram_handle})</span>
+                  )}
+                </span>
               </div>
             </SelectItem>
           ))}

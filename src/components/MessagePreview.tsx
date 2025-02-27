@@ -76,7 +76,18 @@ export default function MessagePreview({
       {contactMethod === 'instagram' && instagramHandle && (
         <div className="mb-4">
           <p className="text-sm text-gray-500">Instagram Handle:</p>
-          <p className="text-gray-700">@{instagramHandle}</p>
+          <p className="text-gray-700 flex items-center">
+            <Instagram className="w-4 h-4 mr-1" />
+            @{instagramHandle}
+            <a 
+              href={`https://www.instagram.com/${instagramHandle}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="ml-2 text-primary hover:underline text-xs"
+            >
+              (View Profile)
+            </a>
+          </p>
         </div>
       )}
 
