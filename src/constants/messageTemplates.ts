@@ -15,6 +15,7 @@ Sincerely,
 {sender}`;
 
 export const INSTAGRAM_TEMPLATE = `Hi {firstname},
+
 I'm concerned about the crisis in DR Congo. The M23 rebels, backed by Rwanda, have killed over 3,000 civilians and captured strategic mineral-rich areas. This threatens US access to cobalt and other critical minerals.
 
 Please support sanctions against Rwanda's Defense Forces and M23 under Executive Order 13413 to protect both Congolese lives and US interests.
