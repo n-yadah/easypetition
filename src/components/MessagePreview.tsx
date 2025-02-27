@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { Mail, Instagram, Phone } from "lucide-react";
+import { Mail, Instagram, Phone, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -35,27 +35,29 @@ export default function MessagePreview({
     .replace(/{firstname}/g, firstName)
     .replace(/{sender}/g, senderName);
 
+  const handleCopyMessage = () => {
+    if (previewMessage) {
+      navigator.clipboard.writeText(previewMessage).then(() => {
+        toast({
+          title: "Message Copied",
+          description: "Message copied to clipboard. Use this in your direct message.",
+          duration: 3000,
+        });
+      });
+    }
+  };
+
+  const handleViewProfile = () => {
+    if (instagramHandle) {
+      const instagramUrl = `https://www.instagram.com/${instagramHandle}`;
+      window.open(instagramUrl, '_blank');
+    }
+  };
+
   const handleSendMessage = () => {
     if (contactMethod === 'email' && email) {
       const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject || '')}&body=${encodeURIComponent(previewMessage)}`;
       window.location.href = mailtoLink;
-    } else if (contactMethod === 'instagram' && instagramHandle) {
-      // First, copy message to clipboard
-      navigator.clipboard.writeText(previewMessage).then(() => {
-        // Show toast notification
-        toast({
-          title: "Message Copied",
-          description: "Message copied to clipboard. Please click the \"Message\" button on their profile to send.",
-          duration: 3000, // Show for 3 seconds
-        });
-        
-        // Wait for 1.5 seconds before opening Instagram
-        setTimeout(() => {
-          // Open the profile in Instagram
-          const instagramUrl = `https://www.instagram.com/${instagramHandle}`;
-          window.open(instagramUrl, '_blank');
-        }, 1500);
-      });
     } else if (contactMethod === 'phone' && phoneNumber) {
       window.location.href = `tel:${phoneNumber.replace(/[^0-9]/g, '')}`;
     }
@@ -113,16 +115,29 @@ export default function MessagePreview({
         <p className="whitespace-pre-wrap text-gray-700">{previewMessage}</p>
       </div>
 
-      <Button 
-        onClick={handleSendMessage}
-        className="w-full bg-primary hover:bg-primary/90"
-      >
-        {contactMethod === 'phone' 
-          ? 'Call Now' 
-          : contactMethod === 'instagram'
-          ? 'Copy & View Profile' 
-          : 'Send Email'}
-      </Button>
+      {contactMethod === 'instagram' ? (
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleCopyMessage} 
+            className="flex-1 bg-primary hover:bg-primary/90"
+          >
+            <Copy className="mr-2 h-4 w-4" /> Copy Message
+          </Button>
+          <Button 
+            onClick={handleViewProfile}
+            className="flex-1 bg-primary hover:bg-primary/90"
+          >
+            <ExternalLink className="mr-2 h-4 w-4" /> View Profile
+          </Button>
+        </div>
+      ) : (
+        <Button 
+          onClick={handleSendMessage}
+          className="w-full bg-primary hover:bg-primary/90"
+        >
+          {contactMethod === 'phone' ? 'Call Now' : 'Send Email'}
+        </Button>
+      )}
     </Card>
   );
 }
