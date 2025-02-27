@@ -27,12 +27,18 @@ export function useRecipients() {
       }
 
       if (data) {
-        // Modify Ted Cruz's photo URL in the response data
+        // Modify Ted Cruz and Sara Jacobs photo URLs in the response data
         const updatedData = data.map(recipient => {
           if (recipient.name === 'Ted Cruz') {
             return {
               ...recipient,
               photo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg'
+            };
+          }
+          if (recipient.name === 'Sara Jacobs') {
+            return {
+              ...recipient,
+              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Rep._Sara_Jacobs_Official_Portrait_117th_Congress.jpg'
             };
           }
           return recipient;
