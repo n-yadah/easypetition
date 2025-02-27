@@ -75,7 +75,9 @@ export function RecipientSelector({
               disabled={!recipient.hasContactInfo}
               className={!recipient.hasContactInfo ? "opacity-50" : ""}
             >
-              🇺🇸{recipient.name} - {recipient.position}
+              <span className="inline-flex items-center">
+                <span>🇺🇸</span><span>{recipient.name} - {recipient.position}</span>
+              </span>
               {!recipient.hasContactInfo && " (No contact info)"}
             </SelectItem>
           ))}
