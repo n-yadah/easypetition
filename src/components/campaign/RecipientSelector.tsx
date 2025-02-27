@@ -30,18 +30,32 @@ export function RecipientSelector({
   onRecipientChange,
   contactMethod
 }: RecipientSelectorProps) {
-  const filteredRecipients = recipients.filter(recipient => {
+  // Filter recipients based on contact method but don't exclude any recipient completely
+  // This will show all recipients, but we'll differentiate which ones have valid contact info
+  const filteredRecipients = recipients.map(recipient => {
+    let hasContactInfo = false;
     switch (contactMethod) {
       case 'email':
-        return recipient.email && recipient.email.trim() !== '';
+        hasContactInfo = Boolean(recipient.email && recipient.email.trim() !== '');
+        break;
       case 'instagram':
-        return recipient.instagram_handle && recipient.instagram_handle.trim() !== '';
+        hasContactInfo = Boolean(recipient.instagram_handle && recipient.instagram_handle.trim() !== '');
+        break;
       case 'phone':
-        return recipient.phone_number && recipient.phone_number.trim() !== '';
-      default:
-        return false;
+        hasContactInfo = Boolean(recipient.phone_number && recipient.phone_number.trim() !== '');
+        break;
     }
+    return { ...recipient, hasContactInfo };
   });
+
+  // Debug output for troubleshooting
+  console.log(`RecipientSelector: ${contactMethod} method selected`);
+  console.log("Filtered recipients:", filteredRecipients.map(r => ({
+    id: r.id,
+    name: r.name,
+    hasContactInfo: r.hasContactInfo,
+    contactMethod
+  })));
 
   return (
     <div className="space-y-2">
@@ -55,8 +69,14 @@ export function RecipientSelector({
         </SelectTrigger>
         <SelectContent>
           {filteredRecipients.map((recipient) => (
-            <SelectItem key={recipient.id} value={recipient.id}>
-              {recipient.name} - {recipient.position}
+            <SelectItem 
+              key={recipient.id} 
+              value={recipient.id}
+              disabled={!recipient.hasContactInfo}
+              className={!recipient.hasContactInfo ? "opacity-50" : ""}
+            >
+              {recipient.name} - {recipient.position} 
+              {!recipient.hasContactInfo && " (No contact info)"}
             </SelectItem>
           ))}
         </SelectContent>

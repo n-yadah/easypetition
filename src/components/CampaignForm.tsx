@@ -22,6 +22,14 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
     senderName: "",
   });
 
+  // Log the recipient data for debugging
+  useEffect(() => {
+    console.log("Available recipients:", recipients);
+    recipients.forEach(recipient => {
+      console.log(`Recipient ${recipient.name}: email=${recipient.email}, instagram=${recipient.instagram_handle}, phone=${recipient.phone_number}`);
+    });
+  }, [recipients]);
+
   useEffect(() => {
     const selectedRecipient = recipients.find(r => r.id === formData.selectedRecipientId);
     onFormUpdate({
@@ -61,6 +69,29 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
       window.removeEventListener('messagecopied', handleMessageCopied as EventListener);
     };
   }, [toast]);
+
+  // Check if selected recipient has data for the current contact method
+  const handleContactMethodChange = (method: 'email' | 'instagram' | 'phone') => {
+    const currentRecipient = recipients.find(r => r.id === formData.selectedRecipientId);
+    setFormData(prev => ({ ...prev, contactMethod: method }));
+    
+    // If current recipient doesn't have data for new contact method, show a toast
+    if (currentRecipient) {
+      const hasContactData = 
+        (method === 'email' && currentRecipient.email) ||
+        (method === 'instagram' && currentRecipient.instagram_handle) ||
+        (method === 'phone' && currentRecipient.phone_number);
+      
+      if (!hasContactData) {
+        toast({
+          title: "Contact Information Unavailable",
+          description: `${currentRecipient.name} doesn't have ${method} contact information. Please select another recipient.`,
+          variant: "destructive",
+        });
+        // Don't clear selection - let user see the issue and select a new recipient
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,7 +146,7 @@ export default function CampaignForm({ onFormUpdate }: CampaignFormProps) {
 
       <ContactMethodSelector
         selectedMethod={formData.contactMethod}
-        onMethodChange={(method) => setFormData({ ...formData, contactMethod: method })}
+        onMethodChange={handleContactMethodChange}
       />
 
       <RecipientSelector
