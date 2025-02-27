@@ -27,24 +27,29 @@ export function useRecipients() {
       }
 
       if (data) {
-        // Modify Ted Cruz and Sara Jacobs photo URLs in the response data
+        console.log('Original data:', data);
+        
+        // Create new array with updated photo URLs
         const updatedData = data.map(recipient => {
+          console.log('Processing recipient:', recipient.name);
+          
+          if (recipient.name === 'Sara Jacobs') {
+            console.log('Updating Sara Jacobs photo URL');
+            return {
+              ...recipient,
+              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/1/15/Representative_Sara_Jacobs_full_portrait.jpg'
+            };
+          }
           if (recipient.name === 'Ted Cruz') {
             return {
               ...recipient,
               photo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg'
             };
           }
-          if (recipient.name === 'Sara Jacobs') {
-            return {
-              ...recipient,
-              photo_url: 'https://upload.wikimedia.org/wikipedia/commons/1/15/Representative_Sara_Jacobs_full_portrait.jpg'
-            };
-          }
           return recipient;
         });
         
-        console.log('Recipients data:', updatedData);
+        console.log('Updated data:', updatedData);
         setRecipients(updatedData);
       }
     };
