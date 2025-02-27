@@ -2,6 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { Mail, Instagram, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 interface MessagePreviewProps {
   template: string;
@@ -24,6 +25,8 @@ export default function MessagePreview({
   email,
   phoneNumber
 }: MessagePreviewProps) {
+  const { toast } = useToast();
+  
   // Extract first name for Instagram messages
   const firstName = recipientName ? recipientName.split(' ')[0] : "Recipient";
   
@@ -37,17 +40,21 @@ export default function MessagePreview({
       const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject || '')}&body=${encodeURIComponent(previewMessage)}`;
       window.location.href = mailtoLink;
     } else if (contactMethod === 'instagram' && instagramHandle) {
-      // Open the profile in Instagram - more reliable than trying to open DMs directly
-      const instagramUrl = `https://www.instagram.com/${instagramHandle}`;
-      window.open(instagramUrl, '_blank');
-      
-      // Copy message to clipboard for easy pasting
+      // First, copy message to clipboard
       navigator.clipboard.writeText(previewMessage).then(() => {
-        // Show toast notification that message was copied (handled by parent component)
-        const event = new CustomEvent('messagecopied', { 
-          detail: 'Message copied to clipboard. Please click the "Message" button on their profile to send.'
+        // Show toast notification
+        toast({
+          title: "Message Copied",
+          description: "Message copied to clipboard. Please click the \"Message\" button on their profile to send.",
+          duration: 3000, // Show for 3 seconds
         });
-        window.dispatchEvent(event);
+        
+        // Wait for 1.5 seconds before opening Instagram
+        setTimeout(() => {
+          // Open the profile in Instagram
+          const instagramUrl = `https://www.instagram.com/${instagramHandle}`;
+          window.open(instagramUrl, '_blank');
+        }, 1500);
       });
     } else if (contactMethod === 'phone' && phoneNumber) {
       window.location.href = `tel:${phoneNumber.replace(/[^0-9]/g, '')}`;
@@ -113,7 +120,7 @@ export default function MessagePreview({
         {contactMethod === 'phone' 
           ? 'Call Now' 
           : contactMethod === 'instagram'
-          ? 'View Profile & Send Message'
+          ? 'Copy & View Profile' 
           : 'Send Email'}
       </Button>
     </Card>
