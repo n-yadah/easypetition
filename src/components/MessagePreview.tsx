@@ -33,16 +33,15 @@ export default function MessagePreview({
       const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject || '')}&body=${encodeURIComponent(previewMessage)}`;
       window.location.href = mailtoLink;
     } else if (contactMethod === 'instagram' && instagramHandle) {
-      // Create Instagram DM link with pre-populated message
-      const instagramUrl = `https://www.instagram.com/direct/t/${instagramHandle}`;
-      // Open Instagram in a new tab
+      // Open the profile in Instagram - more reliable than trying to open DMs directly
+      const instagramUrl = `https://www.instagram.com/${instagramHandle}`;
       window.open(instagramUrl, '_blank');
       
       // Copy message to clipboard for easy pasting
       navigator.clipboard.writeText(previewMessage).then(() => {
         // Show toast notification that message was copied (handled by parent component)
         const event = new CustomEvent('messagecopied', { 
-          detail: 'Message copied to clipboard. Paste it in Instagram DM.'
+          detail: 'Message copied to clipboard. Please click the "Message" button on their profile to send.'
         });
         window.dispatchEvent(event);
       });
@@ -110,7 +109,7 @@ export default function MessagePreview({
         {contactMethod === 'phone' 
           ? 'Call Now' 
           : contactMethod === 'instagram'
-          ? 'Open Instagram DM'
+          ? 'View Profile & Send Message'
           : 'Send Email'}
       </Button>
     </Card>
