@@ -77,8 +77,7 @@ export function RecipientSelector({
             >
               <div className="flex items-center gap-3 w-full">
                 <span className="flex-shrink-0">🇺🇸</span>
-                <span className="truncate max-w-[180px] sm:max-w-[230px] inline-block">{recipient.name} - {recipient.position}</span>
-                {!recipient.hasContactInfo && <span className="ml-auto flex-shrink-0 text-xs">(No contact info)</span>}
+                <span className="truncate max-w-[250px] sm:max-w-[300px] inline-block">{recipient.name} - {recipient.position}</span>
               </div>
             </SelectItem>
           ))}
