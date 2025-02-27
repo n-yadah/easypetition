@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface RecipientCardProps {
   name: string;
@@ -14,20 +14,26 @@ export default function RecipientCard({
   photoUrl
 }: RecipientCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [currentPhotoUrl, setCurrentPhotoUrl] = useState(photoUrl);
   // Using a generic avatar as fallback
   const fallbackImage = "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7";
 
-  console.log('Attempting to load image:', photoUrl);
+  useEffect(() => {
+    setImageError(false);
+    setCurrentPhotoUrl(photoUrl);
+  }, [photoUrl]);
+
+  console.log('RecipientCard render - Current photo URL:', currentPhotoUrl);
 
   return (
     <Card className="p-6 bg-white shadow-sm border animate-slideIn">
       <div className="flex items-start gap-4">
         <img
-          src={imageError ? fallbackImage : photoUrl}
+          src={imageError ? fallbackImage : currentPhotoUrl}
           alt={`${name}'s photo`}
           className="w-24 h-24 rounded-lg object-cover bg-gray-100"
           onError={(e) => {
-            console.log('Image failed to load, using fallback:', photoUrl);
+            console.error('Image failed to load:', currentPhotoUrl);
             setImageError(true);
           }}
         />

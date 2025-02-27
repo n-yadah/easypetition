@@ -10,11 +10,13 @@ export function useRecipients() {
 
   useEffect(() => {
     const fetchRecipients = async () => {
+      console.log('Fetching recipients...');
       const { data, error } = await supabase
         .from('recipients')
         .select('*');
       
       if (error) {
+        console.error('Error fetching recipients:', error);
         toast({
           title: "Error loading recipients",
           description: error.message,
@@ -24,6 +26,7 @@ export function useRecipients() {
       }
 
       if (data) {
+        console.log('Recipients data:', data);
         setRecipients(data);
       }
     };
