@@ -11,6 +11,25 @@ export function useRecipients() {
   useEffect(() => {
     const fetchRecipients = async () => {
       console.log('Fetching recipients...');
+      
+      // First update Ted Cruz's photo
+      const { error: updateError } = await supabase
+        .from('recipients')
+        .update({ 
+          photo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Ted_Cruz_senatorial_portrait.jpg' 
+        })
+        .eq('name', 'Ted Cruz');
+
+      if (updateError) {
+        console.error('Error updating Ted Cruz photo:', updateError);
+        toast({
+          title: "Error updating photo",
+          description: updateError.message,
+          variant: "destructive",
+        });
+      }
+
+      // Then fetch all recipients
       const { data, error } = await supabase
         .from('recipients')
         .select('*');
